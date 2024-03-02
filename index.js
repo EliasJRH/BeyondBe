@@ -35,6 +35,10 @@ io.on("connection", function (socket) {
     console.log("message: " + msg);
     io.emit("chat message", msg);
   });
+
+  socket.on("test", function(msg) {
+    console.log(`received test message from ${socket.id}`)
+  })
 })
 
 const port = process.env.PORT || 3000;
@@ -42,5 +46,4 @@ const port = process.env.PORT || 3000;
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
   console.log(`http://localhost:${port}`)
-  console.log(__dirname)
 });
