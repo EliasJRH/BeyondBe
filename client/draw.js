@@ -1,8 +1,8 @@
 const canvas = document.getElementById("whiteboard");
 const ctx = canvas.getContext("2d");
 
-const canvasOffsetX = canvas.offsetLeft;
-const canvasOffsetY = canvas.offsetTop;
+const canvasOffsetX = canvas.offsetLeft - 20;
+const canvasOffsetY = canvas.offsetTop - 20;
 
 canvas.width = window.innerWidth - canvasOffsetX;
 canvas.height = window.innerHeight - canvasOffsetY;
