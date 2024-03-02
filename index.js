@@ -27,9 +27,13 @@ app.use(
   morgan(":method :url :status :response-time ms - :res[content-length]"),
 );
 
-app.get("/", (req, res) => {
+// app.get("/", (req, res) => {
+//   res.sendFile(__dirname + "/client" + "/draw.html");
+// });
+
+app.get("/room/:roomNo", (req, res) => {
   res.sendFile(__dirname + "/client" + "/draw.html");
-});
+})
 
 app.get('/login', (req, res) => {
   res.oidc.login({ returnTo: '/login' });
