@@ -1,3 +1,3 @@
 function sendTest() {
-  socket.emit("test")
+  socket.emit("test");
 }

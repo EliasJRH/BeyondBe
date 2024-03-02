@@ -6,13 +6,32 @@
     <title>Document</title>
   </head>
   <body>
-    yooooooooooooooooooo
+    <!-- yooooooooooooooooooo
 
-    <button id="test">test</button>
+    <button id="test">test</button> -->
+
+    <div style="display: flex; height: 97vh">
+      <div style="flex: 1; padding: 20px">
+        <button>Whiteboard</button>
+        <button>Notepad</button>
+        <!-- Display connected users here -->
+      </div>
+      <canvas
+        id="whiteboard"
+        style="
+          flex: 9;
+          margin: 20px;
+          border: 1px solid black;
+          padding-bottom: 0;
+          border-radius: 5px;
+        "
+      ></canvas>
+    </div>
   </body>
 
   <script src="/socket.io/socket.io.js"></script>
   <script src="clientSockets.js"></script>
   <script src="buttonHandlers.js"></script>
+  <script src="draw.js"></script>
   <script src="window.js"></script>
 </html>
