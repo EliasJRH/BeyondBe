@@ -25,6 +25,7 @@
   "dependencies": {
     "express": "^4.18.3",
     "express-openid-connect": "^2.17.1",
+    "marked": "^12.0.0",
     "socket.io": "^4.7.4"
   },
   "devDependencies": {
