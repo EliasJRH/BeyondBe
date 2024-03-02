@@ -33,14 +33,14 @@ io.on("connection", function (socket) {
     console.log(`A user disconnected ${socket.id}`);
   });
 
-  socket.on("chat message", function (msg) {
-    console.log("message: " + msg);
-    io.emit("chat message", msg);
-  });
+  // socket.on("chat message", function (msg) {
+  //   console.log("message: " + msg);
+  //   io.emit("chat message", msg);
+  // });
 
-  socket.on("test", function (msg) {
-    console.log(`received test message from ${socket.id}`);
-  });
+  // socket.on("test", function (msg) {
+  //   console.log(`received test message from ${socket.id}`);
+  // });
 
   socket.on("draw", function (data) {
     // console.log(data);
@@ -49,6 +49,10 @@ io.on("connection", function (socket) {
 
   socket.on("draw finish", function () {
     io.emit("draw finish");
+  });
+
+  socket.on("text", function (data) {
+    io.emit("text update", data);
   });
 });
 

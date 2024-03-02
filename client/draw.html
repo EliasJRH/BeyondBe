@@ -9,13 +9,24 @@
   <body>
     <section class="container">
       <div id="toolbar">
-        <button class="button">Whiteboard</button>
-        <button class="button">Notepad</button>
+        <button id="whiteboard_btn" class="button">Whiteboard</button>
+        <button id="notepad_btn" class="button">Notepad</button>
       </div>
       <div class="drawing-board">
-        <canvas id="drawing-board"></canvas>
-        <div class="background"></div>
-        <!-- New div placed behind the canvas -->
+        <canvas id="whiteboard" style="display: block"></canvas>
+        <div id="notepad" style="display: none">
+          <textarea
+            name=""
+            id="notepad_text"
+            cols="30"
+            rows="10"
+            style="flex: 5; resize: none; border-right: 1 solid black"
+          ></textarea>
+          <div
+            id="markdown_output"
+            style="border-left: 1 solid black; flex: 5"
+          ></div>
+        </div>
       </div>
     </section>
   </body>
@@ -24,5 +35,7 @@
   <script src="clientSockets.js"></script>
   <script src="buttonHandlers.js"></script>
   <script src="draw.js"></script>
+  <script src="textarea.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="window.js"></script>
 </html>

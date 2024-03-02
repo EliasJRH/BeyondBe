@@ -6,15 +6,6 @@ body {
   color: white;
 }
 
-h1 {
-  background: #7f7fd5;
-  background: -webkit-linear-gradient(to right, #91eae4, #86a8e7, #7f7fd5);
-  background: linear-gradient(to right, #91eae4, #86a8e7, #7f7fd5);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
 .container {
   height: 100%;
   display: flex;
@@ -46,5 +37,14 @@ h1 {
   border-radius: 4px;
   color: black;
   padding: 2px;
-  cursor: pointer
+  cursor: pointer;
+}
+
+#markdown_output {
+  color: black;
+  /* padding: 5px 10px 5px 10px; */
+  padding: 0px 10px;
+
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: white;
 }

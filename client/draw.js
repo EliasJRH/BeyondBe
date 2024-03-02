@@ -1,4 +1,4 @@
-const canvas = document.getElementById("drawing-board");
+const canvas = document.getElementById("whiteboard");
 // const toolbar = document.getElementById("toolbar");
 const ctx = canvas.getContext("2d");
 
