@@ -41,6 +41,15 @@ io.on("connection", function (socket) {
   socket.on("test", function (msg) {
     console.log(`received test message from ${socket.id}`);
   });
+
+  socket.on("draw", function (data) {
+    // console.log(data);
+    io.emit("draw update", data);
+  });
+
+  socket.on("draw finish", function () {
+    io.emit("draw finish");
+  });
 });
 
 const port = process.env.PORT || 3000;
