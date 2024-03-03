@@ -39,34 +39,56 @@ app.get('/login', (req, res) => {
   res.oidc.login({ returnTo: '/login' });
 });
 
+roomData = {}
+
 // Socket.io logic goes here
 io.on("connection", function (socket) {
-  console.log(`A user connected ${socket.id}`);
+  const socketUrl = socket.handshake.headers.referer;
+  const roomNo = socketUrl.split("/").pop();
+  const roomName = `room${roomNo}`;
+  console.log(`User ${socket.id} connected to room ${roomNo}`);
+  socket.join(roomName);
+
+  if (!roomData[roomName]) {
+    roomData[roomName] = {
+      users: [],
+      drawData: {},
+      textData: "",
+    };
+  } else {  
+    for (const user in roomData[roomName].drawData) {
+      if (user !== socket.id) {
+        roomData[roomName].drawData[user].forEach((data) => {
+          if (data !== -1) socket.emit("draw update", data);
+          else socket.emit("draw finish");
+        });
+      }
+    }
+    socket.emit("text update", roomData[roomName].textData);    
+  }
+  roomData[roomName].users.push(socket.id);
+  roomData[roomName].drawData[socket.id] = [];
 
   socket.on("disconnect", function () {
     console.log(`A user disconnected ${socket.id}`);
   });
 
-  // socket.on("chat message", function (msg) {
-  //   console.log("message: " + msg);
-  //   io.emit("chat message", msg);
-  // });
-
-  // socket.on("test", function (msg) {
-  //   console.log(`received test message from ${socket.id}`);
-  // });
-
+  // Draw Stroke
   socket.on("draw", function (data) {
-    // console.log(data);
-    io.emit("draw update", data);
+    roomData[roomName].drawData[socket.id].push(data);
+    io.to(roomName).emit("draw update", data);
   });
 
+  // Finished Stroke
   socket.on("draw finish", function () {
-    io.emit("draw finish");
+    roomData[roomName].drawData[socket.id].push(-1);
+    io.to(roomName).emit("draw finish");
   });
 
+  // Text
   socket.on("text", function (data) {
-    io.emit("text update", data);
+    roomData[roomName].textData = data;
+    io.to(roomName).emit("text update", data);
   });
 });
 
