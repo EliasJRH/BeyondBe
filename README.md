@@ -11,3 +11,7 @@ UOttaHack 2024
 ## Format
 
 1. `npm run format`
+
+## Run as a Docker image
+
+1. `docker run --rm -p 3000:3000 beyondbe:1.0.1`
