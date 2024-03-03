@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js",
-    "format": "prettier --write ."
+    "dev": "nodemon index.js",
+    "format": "prettier --write .",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
