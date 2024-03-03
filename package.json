@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/EliasJRH/BeyondBe#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.18.3",
     "express-openid-connect": "^2.17.1",
     "marked": "^12.0.0",

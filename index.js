@@ -3,10 +3,18 @@ const http = require("http");
 const socketIO = require("socket.io");
 const morgan = require("morgan");
 const { auth } = require("express-openid-connect");
+const cors = require('cors');
 
 const app = express();
+app.use(cors());
+
 const server = http.createServer(app);
-const io = socketIO(server);
+const io = require('socket.io')(server, {
+    cors: {
+      origin: "*",  // Allow all origins
+      methods: ["GET", "POST"]
+    }
+  });
 
 // Auth0 Configuration
 const config = {
