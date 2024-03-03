@@ -67,48 +67,48 @@ roomData = {};
 //   console.log(`User ${socket.id} connected to room ${roomNo}`);
 //   socket.join(roomName);
 
-  if (!roomData[roomName]) {
-    roomData[roomName] = {
-      users: [],
-      drawData: {},
-      textData: "",
-    };
-  } else {  
-    for (const user in roomData[roomName].drawData) {
-      if (user !== socket.id) {
-        roomData[roomName].drawData[user].forEach((data) => {
-          if (data !== -1) socket.emit("draw update", data);
-          else socket.emit("draw finish");
-        });
-      }
-    }
-    socket.emit("text update", roomData[roomName].textData);    
-  }
-  roomData[roomName].users.push(socket.id);
-  roomData[roomName].drawData[socket.id] = [];
+//   if (!roomData[roomName]) {
+//     roomData[roomName] = {
+//       users: [],
+//       drawData: {},
+//       textData: "",
+//     };
+//   } else {  
+//     for (const user in roomData[roomName].drawData) {
+//       if (user !== socket.id) {
+//         roomData[roomName].drawData[user].forEach((data) => {
+//           if (data !== -1) socket.emit("draw update", data);
+//           else socket.emit("draw finish");
+//         });
+//       }
+//     }
+//     socket.emit("text update", roomData[roomName].textData);    
+//   }
+//   roomData[roomName].users.push(socket.id);
+//   roomData[roomName].drawData[socket.id] = [];
 
-  socket.on("disconnect", function () {
-    console.log(`A user disconnected ${socket.id}`);
-  });
+//   socket.on("disconnect", function () {
+//     console.log(`A user disconnected ${socket.id}`);
+//   });
 
-  // Draw Stroke
-  socket.on("draw", function (data) {
-    roomData[roomName].drawData[socket.id].push(data);
-    io.to(roomName).emit("draw update", data);
-  });
+//   // Draw Stroke
+//   socket.on("draw", function (data) {
+//     roomData[roomName].drawData[socket.id].push(data);
+//     io.to(roomName).emit("draw update", data);
+//   });
 
-  // Finished Stroke
-  socket.on("draw finish", function () {
-    roomData[roomName].drawData[socket.id].push(-1);
-    io.to(roomName).emit("draw finish");
-  });
+//   // Finished Stroke
+//   socket.on("draw finish", function () {
+//     roomData[roomName].drawData[socket.id].push(-1);
+//     io.to(roomName).emit("draw finish");
+//   });
 
-  // Text
-  socket.on("text", function (data) {
-    roomData[roomName].textData = data;
-    io.to(roomName).emit("text update", data);
-  });
-});
+//   // Text
+//   socket.on("text", function (data) {
+//     roomData[roomName].textData = data;
+//     io.to(roomName).emit("text update", data);
+//   });
+// });
 
 const port = process.env.PORT || 3000;
 
