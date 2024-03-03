@@ -18,12 +18,12 @@ const io = require('socket.io')(server, {
 
 // Auth0 Configuration
 const config = {
-  authRequired: false,
-  auth0Logout: true,
-  secret: 'rFgRn0v9KQIRpj9a6v4Urfnc7jjA6PcJRr7LVyzFHRBLhlM8m7fN7MlomoTopt3B',
-  baseURL: 'http://localhost:3000',
-  clientID: '5eqCZzqXygj0QD8gHf3HcQfq33KQpyfM',
-  issuerBaseURL: 'https://dev-628rmf4fk1o6ahth.us.auth0.com'
+    authRequired: false,
+    auth0Logout: true,
+    secret: process.env.SECRET,
+    baseURL: `http://localhost:${process.env.PORT}`,
+    clientID: process.env.CLIENT_ID,
+    issuerBaseURL: process.env.ISSUER_BASE_URL
 };
 
 // Auth router attaches /login, /logout, and /callback routes to the baseURL
