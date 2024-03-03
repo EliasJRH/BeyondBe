@@ -6,7 +6,7 @@ const { auth } = require("express-openid-connect");
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIO(server);
+const io = socketIO(server).listen(server);
 
 // Auth0 Configuration
 const config = {
