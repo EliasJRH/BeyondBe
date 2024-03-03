@@ -1,12 +1,29 @@
 const express = require("express");
 const http = require("http");
-const socketIO = require("socket.io");
+// const socketIO = require("socket.io");
 const morgan = require("morgan");
 const { auth } = require("express-openid-connect");
+const solace = require("solclientjs");
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIO(server).listen(server);
+// const io = socketIO(server);
+// const factoryProps = new solace.SolclientFactoryProperties();
+// factoryProps.profile = solace.SolclientFactoryProfiles.version10;
+// const solaceFactory = solace.SolclientFactory.init(factoryProps);
+// solaceFactory.setLogLevel(solace.LogLevel.WARN);
+
+// const session = solace.SolclientFactory.createSession({
+//   url: "wss://mr-connection-aw8kuvu82tr.messaging.solace.cloud:443",
+//   vpnName: "beyondbe-drawdata",
+//   userName: "solace-cloud-client",
+//   password: "7lq5dtc8ktvp1qs9vnnikqe50n"
+// });
+// try {
+//   session.connect();
+// } catch (error) {
+//   console.log(error);
+// }
 
 // Auth0 Configuration
 const config = {
@@ -40,57 +57,57 @@ app.get('/login', (req, res) => {
     res.oidc.login({ returnTo: '/room/1' });
 });
 
-roomData = {}
+roomData = {};
 
 // Socket.io logic goes here
-io.on("connection", function (socket) {
-    const socketUrl = socket.handshake.headers.referer;
-    const roomNo = socketUrl.split("/").pop();
-    const roomName = `room${roomNo}`;
-    console.log(`User ${socket.id} connected to room ${roomNo}`);
-    socket.join(roomName);
+// io.on("connection", function (socket) {
+//   const socketUrl = socket.handshake.headers.referer;
+//   const roomNo = socketUrl.split("/").pop();
+//   const roomName = `room${roomNo}`;
+//   console.log(`User ${socket.id} connected to room ${roomNo}`);
+//   socket.join(roomName);
 
-    if (!roomData[roomName]) {
-        roomData[roomName] = {
-            users: [],
-            drawData: {},
-            textData: "",
-        };
-    } else {  
-        for (const user in roomData[roomName].drawData) {
-            if (user !== socket.id) {
-                roomData[roomName].drawData[user].forEach((data) => {
-                    if (data !== -1) socket.emit("draw update", data);
-                    else socket.emit("draw finish");
-                });
-            }
-        }
-        socket.emit("text update", roomData[roomName].textData);    
+  if (!roomData[roomName]) {
+    roomData[roomName] = {
+      users: [],
+      drawData: {},
+      textData: "",
+    };
+  } else {  
+    for (const user in roomData[roomName].drawData) {
+      if (user !== socket.id) {
+        roomData[roomName].drawData[user].forEach((data) => {
+          if (data !== -1) socket.emit("draw update", data);
+          else socket.emit("draw finish");
+        });
+      }
     }
-    roomData[roomName].users.push(socket.id);
-    roomData[roomName].drawData[socket.id] = [];
+    socket.emit("text update", roomData[roomName].textData);    
+  }
+  roomData[roomName].users.push(socket.id);
+  roomData[roomName].drawData[socket.id] = [];
 
-    socket.on("disconnect", function () {
-        console.log(`A user disconnected ${socket.id}`);
-    });
+  socket.on("disconnect", function () {
+    console.log(`A user disconnected ${socket.id}`);
+  });
 
-    // Draw Stroke
-    socket.on("draw", function (data) {
-        roomData[roomName].drawData[socket.id].push(data);
-        io.to(roomName).emit("draw update", data);
-    });
+  // Draw Stroke
+  socket.on("draw", function (data) {
+    roomData[roomName].drawData[socket.id].push(data);
+    io.to(roomName).emit("draw update", data);
+  });
 
-    // Finished Stroke
-    socket.on("draw finish", function () {
-        roomData[roomName].drawData[socket.id].push(-1);
-        io.to(roomName).emit("draw finish");
-    });
+  // Finished Stroke
+  socket.on("draw finish", function () {
+    roomData[roomName].drawData[socket.id].push(-1);
+    io.to(roomName).emit("draw finish");
+  });
 
-    // Text
-    socket.on("text", function (data) {
-        roomData[roomName].textData = data;
-        io.to(roomName).emit("text update", data);
-    });
+  // Text
+  socket.on("text", function (data) {
+    roomData[roomName].textData = data;
+    io.to(roomName).emit("text update", data);
+  });
 });
 
 const port = process.env.PORT || 3000;

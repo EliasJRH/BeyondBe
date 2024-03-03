@@ -14,4 +14,4 @@ UOttaHack 2024
 
 ## Run as a Docker image
 
-1. `docker run --rm -p 3000:3000 beyondbe:1.0.1`
+1. `docker run --rm -p 3000:3000 beyondbe:1.0.2`
