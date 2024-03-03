@@ -27,37 +27,83 @@ const server = http.createServer(app);
 
 // Auth0 Configuration
 const config = {
-    authRequired: false,
-    auth0Logout: true,
-    secret: 'rFgRn0v9KQIRpj9a6v4Urfnc7jjA6PcJRr7LVyzFHRBLhlM8m7fN7MlomoTopt3B',
-    baseURL: 'http://localhost:3000',
-    clientID: '5eqCZzqXygj0QD8gHf3HcQfq33KQpyfM',
-    issuerBaseURL: 'https://dev-628rmf4fk1o6ahth.us.auth0.com'
+  authRequired: false,
+  auth0Logout: true,
+  secret: "rFgRn0v9KQIRpj9a6v4Urfnc7jjA6PcJRr7LVyzFHRBLhlM8m7fN7MlomoTopt3B",
+  baseURL: "http://localhost:3000",
+  clientID: "5eqCZzqXygj0QD8gHf3HcQfq33KQpyfM",
+  issuerBaseURL: "https://dev-628rmf4fk1o6ahth.us.auth0.com",
 };
 
+// const factoryProps = new solace.SolclientFactoryProperties();
+// factoryProps.profile = solace.SolclientFactoryProfiles.version10;
+// const solaceFactory = solace.SolclientFactory.init(factoryProps);
+// solaceFactory.setLogLevel(solace.LogLevel.WARN);
+
+// const session = solaceFactory.createSession({
+//   url: "wss://mr-connection-aw8kuvu82tr.messaging.solace.cloud:443",
+//   vpnName: "beyondbe-drawdata",
+//   userName: "solace-cloud-client",
+//   password: "7lq5dtc8ktvp1qs9vnnikqe50n",
+// });
+
+// try {
+//   session.connect();
+// } catch (error) {
+//   console.log(error);
+// }
+
+// session.on(solace.SessionEventCode.UP_NOTICE, function (sessionEvent) {
+//   try {
+//     session.subscribe(
+//       solace.SolclientFactory.createTopic(`Room/>`),
+//       true,
+//       `Room`,
+//       10000,
+//     );
+//   } catch (error) {
+//     console.log(error.toString());
+//   }
+// });
+
+// roomData = {};
+
+// session.on(solace.SessionEventCode.MESSAGE, function (message) {
+//     let roomNum = message.getDestination().getName().split("/")[1];
+//     if (!roomData[roomNum]) {
+//         roomData[roomNum] = {
+//             drawData: {},
+//             textData: "",
+//         };
+//     }
+// });
 // Auth router attaches /login, /logout, and /callback routes to the baseURL
 app.use(auth(config));
 
 // Define your routes and middleware here
 app.use(express.static(__dirname + "/client"));
 app.use(
-    morgan(":method :url :status :response-time ms - :res[content-length]"),
+  morgan(":method :url :status :response-time ms - :res[content-length]"),
 );
 
 // Redirect root URL to /login
 app.get("/", (req, res) => {
-    res.redirect("/login");
+  res.redirect("/login");
 });
 
 app.get("/room/:roomNo", (req, res) => {
-    res.sendFile(__dirname + "/client" + "/draw.html");
+  res.sendFile(__dirname + "/client" + "/draw.html");
 });
 
-app.get('/login', (req, res) => {
-    res.oidc.login({ returnTo: '/room/1' });
+app.get("/login", (req, res) => {
+  res.oidc.login({ returnTo: "/room/1" });
 });
 
-roomData = {};
+app.get("/admin", (req, res) => {
+    res.sendFile(__dirname + "/client" + "/admin.html");
+})
+
+
 
 // Socket.io logic goes here
 // io.on("connection", function (socket) {
@@ -73,7 +119,7 @@ roomData = {};
 //       drawData: {},
 //       textData: "",
 //     };
-//   } else {  
+//   } else {
 //     for (const user in roomData[roomName].drawData) {
 //       if (user !== socket.id) {
 //         roomData[roomName].drawData[user].forEach((data) => {
@@ -82,7 +128,7 @@ roomData = {};
 //         });
 //       }
 //     }
-//     socket.emit("text update", roomData[roomName].textData);    
+//     socket.emit("text update", roomData[roomName].textData);
 //   }
 //   roomData[roomName].users.push(socket.id);
 //   roomData[roomName].drawData[socket.id] = [];
@@ -113,6 +159,6 @@ roomData = {};
 const port = process.env.PORT || 3000;
 
 server.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-    console.log(`http://localhost:${port}`);
+  console.log(`Server is running on port ${port}`);
+  console.log(`http://localhost:${port}`);
 });

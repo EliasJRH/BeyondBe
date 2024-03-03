@@ -63,7 +63,6 @@ To load an API variation, use one of the following statements:
     OR  <script src="solclient-debug.js"></script> <!-- debug      -->
     </head>
 
-
 ## API PROFILES
 
 The API has the concept of an initialization profile. The intent of the

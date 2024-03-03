@@ -58,7 +58,7 @@ const draw = (e) => {
   // socket.emit("draw", JSON.stringify(coords));
   const message = solaceFactory.createMessage();
   message.setDestination(
-    solaceFactory.createTopicDestination(`Room/${roomNo}/draw`)
+    solaceFactory.createTopicDestination(`Room/${roomNo}/draw`),
   );
   message.setBinaryAttachment(JSON.stringify(coords));
   message.setDeliveryMode(solace.MessageDeliveryModeType.DIRECT);
@@ -75,11 +75,12 @@ canvas.addEventListener("mouseup", (e) => {
   isDrawing = false;
   // ctx.stroke();
   // ctx.beginPath();
+  console.log(canvas.data)
 
   // socket.emit("draw finish");
   const message = solaceFactory.createMessage();
   message.setDestination(
-    solaceFactory.createTopicDestination(`Room/${roomNo}/drawfinish`)
+    solaceFactory.createTopicDestination(`Room/${roomNo}/drawfinish`),
   );
   message.setBinaryAttachment("finish");
   message.setDeliveryMode(solace.MessageDeliveryModeType.DIRECT);

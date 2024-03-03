@@ -24,7 +24,7 @@ session.on(solace.SessionEventCode.UP_NOTICE, function (sessionEvent) {
       solace.SolclientFactory.createTopic(`Room/${roomNo}/draw`),
       true,
       `Room/${roomNo}/draw`,
-      10000
+      10000,
     );
   } catch (error) {
     console.log(error.toString());
@@ -35,7 +35,7 @@ session.on(solace.SessionEventCode.UP_NOTICE, function (sessionEvent) {
       solace.SolclientFactory.createTopic(`Room/${roomNo}/drawfinish`),
       true,
       `Room/${roomNo}/drawfinish`,
-      10000
+      10000,
     );
   } catch (error) {
     console.log(error.toString());
@@ -46,7 +46,7 @@ session.on(solace.SessionEventCode.UP_NOTICE, function (sessionEvent) {
       solace.SolclientFactory.createTopic(`Room/${roomNo}/text`),
       true,
       `Room/${roomNo}/text`,
-      10000
+      10000,
     );
   } catch (error) {
     console.log(error.toString());

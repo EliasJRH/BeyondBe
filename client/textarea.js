@@ -10,7 +10,10 @@ notepad.style.height = canvas.height;
 
 session.on(solace.SessionEventCode.MESSAGE, function (message) {
   if (message.getDestination().getName().split("/")[2] == "text") {
-    document.getElementById("notepad_text").value = message.getBinaryAttachment();
-    document.getElementById("markdown_output").innerHTML = marked.parse(message.getBinaryAttachment());
+    document.getElementById("notepad_text").value =
+      message.getBinaryAttachment();
+    document.getElementById("markdown_output").innerHTML = marked.parse(
+      message.getBinaryAttachment(),
+    );
   }
 });
