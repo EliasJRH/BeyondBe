@@ -35,15 +35,15 @@ session.on(solace.SessionEventCode.MESSAGE, function (message) {
   roomNums.add(message.getDestination().getName().split("/")[1]);
   document.getElementById("rooms_grid").innerHTML = "";
   const sortedRoomNums = Array.from(roomNums).sort();
-  sortedRoomNums.forEach(roomNum => {
+  sortedRoomNums.forEach((roomNum) => {
     const button = document.createElement("button");
     button.textContent = `Room ${roomNum}`;
-    button.addEventListener("click", function() {
+    button.addEventListener("click", function () {
       window.open(`room/${roomNum}`, "_blank");
     });
     button.style.width = "100px";
     button.style.height = "30px";
-    button.style.cursor = "pointer"
+    button.style.cursor = "pointer";
     document.getElementById("rooms_grid").appendChild(button);
   });
 });

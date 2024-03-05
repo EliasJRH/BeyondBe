@@ -100,10 +100,8 @@ app.get("/login", (req, res) => {
 });
 
 app.get("/admin", (req, res) => {
-    res.sendFile(__dirname + "/client" + "/admin.html");
-})
-
-
+  res.sendFile(__dirname + "/client" + "/admin.html");
+});
 
 // Socket.io logic goes here
 // io.on("connection", function (socket) {
