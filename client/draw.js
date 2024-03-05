@@ -13,16 +13,6 @@ let lineWidth = 5;
 let startX;
 let startY;
 
-// socket.on("draw update", function (data) {
-//   let coords = JSON.parse(data);
-
-//   ctx.lineWidth = lineWidth;
-//   ctx.lineCap = "round";
-
-//   ctx.lineTo(coords.x, coords.y);
-//   ctx.stroke();
-// });
-
 session.on(solace.SessionEventCode.MESSAGE, function (message) {
   if (message.getDestination().getName().split("/")[2] == "draw") {
     let coords = JSON.parse(message.getBinaryAttachment());
@@ -37,25 +27,22 @@ session.on(solace.SessionEventCode.MESSAGE, function (message) {
   }
 });
 
-// socket.on("draw finish", function () {
-//   ctx.stroke();
-//   ctx.beginPath();
-// });
-
 const draw = (e) => {
   if (!isDrawing) {
     return;
   }
 
-  // ctx.lineWidth = lineWidth;
-  // ctx.lineCap = "round";
+  if (e.targetTouches && e.targetTouches[0].force == 0){
+    return;
+  }
 
-  // ctx.lineTo(e.clientX - canvasOffsetX, e.clientY);
-  // ctx.stroke();
+  console.log(e)
 
-  let coords = { x: e.clientX - canvasOffsetX, y: e.clientY };
+  let coords = {
+    x: (e.clientX || e.touches[0].clientX) - canvasOffsetX,
+    y: e.clientY || e.touches[0].clientY,
+  };
 
-  // socket.emit("draw", JSON.stringify(coords));
   const message = solaceFactory.createMessage();
   message.setDestination(
     solaceFactory.createTopicDestination(`Room/${roomNo}/draw`),
@@ -71,13 +58,10 @@ canvas.addEventListener("mousedown", (e) => {
   startY = e.clientY;
 });
 
+canvas.addEventListener("mousemove", draw);
+
 canvas.addEventListener("mouseup", (e) => {
   isDrawing = false;
-  // ctx.stroke();
-  // ctx.beginPath();
-  console.log(canvas.data)
-
-  // socket.emit("draw finish");
   const message = solaceFactory.createMessage();
   message.setDestination(
     solaceFactory.createTopicDestination(`Room/${roomNo}/drawfinish`),
@@ -87,4 +71,21 @@ canvas.addEventListener("mouseup", (e) => {
   session.send(message);
 });
 
-canvas.addEventListener("mousemove", draw);
+canvas.addEventListener("touchstart", (e) => {
+  isDrawing = true;
+  startX = e.clientX;
+  startY = e.clientY;
+});
+
+canvas.addEventListener("touchmove", draw);
+
+canvas.addEventListener("touchend", (e) => {
+  isDrawing = false;
+  const message = solaceFactory.createMessage();
+  message.setDestination(
+    solaceFactory.createTopicDestination(`Room/${roomNo}/drawfinish`),
+  );
+  message.setBinaryAttachment("finish");
+  message.setDeliveryMode(solace.MessageDeliveryModeType.DIRECT);
+  session.send(message);
+});
