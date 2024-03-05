@@ -32,11 +32,11 @@ const draw = (e) => {
     return;
   }
 
+  // console.log(e)
+  
   if (e.targetTouches && e.targetTouches[0].force == 0){
     return;
   }
-
-  console.log(e)
 
   let coords = {
     x: (e.clientX || e.touches[0].clientX) - canvasOffsetX,

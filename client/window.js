@@ -56,6 +56,9 @@ document
     if (event.target.value === "") {
       return;
     }
+
+    // console.log(event)
+
     const message = solaceFactory.createMessage();
     message.setDestination(
       solaceFactory.createTopicDestination(`Room/${roomNo}/text`),
